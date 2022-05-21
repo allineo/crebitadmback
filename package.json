@@ -1,0 +1,23 @@
+{
+  "name": "crebitadmback",
+  "version": "1.0.0",
+  "main": "admin.js",
+  "scripts": {
+    "start": "node admin.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allineo/crebitadmback.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allineo/crebitadmback/issues"
+  },
+  "homepage": "https://github.com/allineo/crebitadmback#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
+}
