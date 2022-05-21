@@ -1,21 +1,7 @@
-var http = require("http");
 var axios = require('axios');
 
-http.createServer(function (request, response) {
-    const head = {
-        'Content-Type': 'text/plain',
-      //  'charset': 'utf-8'
-    };
-    response.writeHead(200, head);
 
-    let alias = getToken('65904249187');
-
-    response.end('Olá Mundo\n' + alias);
-}).listen(8000, '127.0.0.1');
-
-console.log('Servidor executando em http://127.0.0.1:8000/');
-
-  
+// 3.83.58.159  
 // Collection Postman: https://www.getpostman.com/collections/fe186c20177c57fb8041
 // https://www.getpostman.com/collections/8642d8b8301dd4bbdd2d
 
@@ -26,7 +12,8 @@ let liveonCredentials = {
     "adminpwd": "70c071daac26ae7b"
 };
 
-async function getToken(cpf) {
+
+exports.getAlias = async function (cpf) {
   try {
       console.log(cpf);
       const url = liveonCredentials['url'] + '/auth';
