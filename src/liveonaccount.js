@@ -31,7 +31,7 @@ exports.getAlias = async function (cpf) {
           headers: headers
       })
           .then(function (response) {
-              console.log('data = ' + response.data);
+              console.log('data = ' + JSON.stringify(response.data));
               return response.data;
           })
           .catch(function (error) {

@@ -36,4 +36,4 @@ server.on('request', async (request, response) => {
 server.listen(8000);
 console.log('Servidor executando no Host, porta 8000');
 const data = liveonAccount.getAlias('65904249187');
-console.log('alias = ' + data);
+console.log('alias = ' + JSON.stringify(data));
