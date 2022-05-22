@@ -14,8 +14,8 @@ let liveonCredentials = {
 
 
 exports.getAlias = async function (cpf) {
+    
   try {
-      console.log(cpf);
       const url = liveonCredentials['url'] + '/auth';
       const headers = {
           'Content-Type': 'application/json',

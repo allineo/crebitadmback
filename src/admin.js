@@ -1,16 +1,38 @@
 var http = require("http");
 const liveonAccount = require('./liveonaccount');
 
-http.createServer(function (request, response) {
-    const head = {
-        'Content-Type': 'text/plain',
-      //  'charset': 'utf-8'
-    };
-    response.writeHead(200, head);
 
-    let alias = liveonAccount.getAlias('65904249187');
+const server = http.createServer();
+server.on('request', async (request, response) => {
 
-    response.end('Olá Mundo\n' + alias);
-}).listen(8000, '3.83.58.159');
+  //try {
+  response.setHeader("Content-Type", "application/json"); 
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  //  'charset': 'utf-8'
+  response.writeHead(200);
 
-console.log('Servidor executando em http://3.83.58.159:8000/');
+  console.log(request.url);
+  switch (request.url) {
+    case "/favicon.ico":
+      response.end('');
+      break;
+
+    case "/alias":
+      const data = await liveonAccount.getAlias('65904249187');
+      console.log('alias = ' + data);
+      response.end(JSON.stringify(data));
+      break;
+
+    default:
+      response.end("Hello Crebit Admin");
+  }
+  /*catch(err => {
+    res.writeHead(500);
+    res.end(err);
+    });
+  */
+});
+
+
+server.listen(8000);
+console.log('Servidor executando no Host, porta 8000');
