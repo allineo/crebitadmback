@@ -19,7 +19,6 @@ server.on('request', async (request, response) => {
 
     case "/alias":
       const data = await liveonAccount.getAlias('65904249187');
-      console.log('alias = ' + data);
       response.end(JSON.stringify(data));
       break;
 
@@ -36,3 +35,5 @@ server.on('request', async (request, response) => {
 
 server.listen(8000);
 console.log('Servidor executando no Host, porta 8000');
+const data = await liveonAccount.getAlias('65904249187');
+console.log('alias = ' + data);
