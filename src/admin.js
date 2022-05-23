@@ -6,24 +6,43 @@ const server = http.createServer();
 server.on('request', async (request, response) => {
 
   //try {
-  response.setHeader("Content-Type", "application/json"); 
-  response.setHeader('Access-Control-Allow-Origin', '*');
-  //  'charset': 'utf-8'
-  response.writeHead(200);
-
   console.log(request.url);
-  switch (request.url) {
-    case "/favicon.ico":
-      response.end('');
-      break;
+  if (request.method === "GET") {
+    switch (request.url) {
+      case "/favicon.ico":
+        response.end('');
+        break;
+      default:
+        response.end("Hello Crebit Admin");
+    }
 
-    case "/alias":
-      const data = await liveonAccount.getAlias('65904249187');
-      response.end(JSON.stringify(data));
-      break;
+  } else if (request.method === "POST") {
+    response.setHeader("Content-Type", "application/json");
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    //response.setEncoding('utf8'); 'charset': 'utf-8'
+    response.writeHead(200);
+    switch (request.url) {
 
-    default:
-      response.end("Hello Crebit Admin");
+      case "/alias":
+        let body = '';
+        request.on('data', function (data) {
+          body += data;
+        });
+        request.on('end', async () => {
+          console.log(body);
+          let cpf = JSON.parse(body)['cpf'];
+          console.log('cpf = ' + cpf);
+          let alias = '';
+          if (cpf !== '') {
+            alias = await liveonAccount.getAlias("14090172730");
+          }
+          response.end(JSON.stringify(alias));
+        });
+        break;
+
+      default:
+        response.end("Hello Crebit Admin POST");
+    }
   }
   /*catch(err => {
     res.writeHead(500);
@@ -35,5 +54,5 @@ server.on('request', async (request, response) => {
 
 server.listen(8000);
 console.log('Servidor executando no Host, porta 8000');
-const data = liveonAccount.getAlias('65904249187');
-console.log('alias = ' + JSON.stringify(data));
+
+//const data = liveonAccount.getAlias('65904249187');

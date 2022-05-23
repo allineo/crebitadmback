@@ -14,9 +14,9 @@ let liveonCredentials = {
 
 
 exports.getAlias = async function (cpf) {
-    
+    console.log(cpf);
   try {
-      const url = liveonCredentials['url'] + '/auth';
+    const url = liveonCredentials['url'] + '/auth';
       const headers = {
           'Content-Type': 'application/json',
           'Subscription-key': liveonCredentials['subscriptionKey']
@@ -31,7 +31,7 @@ exports.getAlias = async function (cpf) {
           headers: headers
       })
           .then(function (response) {
-              console.log('data = ' + JSON.stringify(response.data));
+              //console.log('data = ' + JSON.stringify(response.data));
               return response.data;
           })
           .catch(function (error) {
