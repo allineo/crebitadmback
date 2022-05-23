@@ -19,7 +19,7 @@ server.on('request', async (request, response) => {
 
   } else if (request.method === "POST") {
     response.setHeader("Content-Type", "application/json");
-    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Origin', 'https://frontend-crebit.apps.binnovation.co');
     //response.setEncoding('utf8'); 'charset': 'utf-8'
     response.writeHead(200);
     
