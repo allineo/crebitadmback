@@ -1,4 +1,5 @@
 var http = require("http");
+const liveonIndividuo = require('./liveonindividuo');
 const liveonAccount = require('./liveonaccount');
 
 
@@ -21,22 +22,34 @@ server.on('request', async (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     //response.setEncoding('utf8'); 'charset': 'utf-8'
     response.writeHead(200);
+    
+    let body = '';
+    request.on('data', function (data) {
+      body += data;
+    });
+    let respjson = '';
+
     switch (request.url) {
 
-      case "/alias":
-        let body = '';
-        request.on('data', function (data) {
-          body += data;
-        });
+      case "/getindividuo":
         request.on('end', async () => {
           let cpf = JSON.parse(body)['cpf'];
-          let alias = '';
           if (cpf !== '') {
-            alias = await liveonAccount.getAlias(cpf);
+            respjson = await liveonIndividuo.getIndividuo(cpf);
           }
-          response.end(JSON.stringify(alias));
+          response.end(JSON.stringify(respjson));
         });
         break;
+
+        case "/alias":
+          request.on('end', async () => {
+            let cpf = JSON.parse(body)['cpf'];
+            if (cpf !== '') {
+              respjson = await liveonAccount.getAlias(cpf);
+            }
+            response.end(JSON.stringify(respjson));
+          });
+          break;
 
       default:
         response.end("Hello Crebit Admin POST");
