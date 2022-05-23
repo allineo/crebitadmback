@@ -14,7 +14,6 @@ let liveonCredentials = {
 
 
 exports.getAlias = async function (cpf) {
-    console.log(cpf);
   try {
     const url = liveonCredentials['url'] + '/auth';
       const headers = {
@@ -25,7 +24,6 @@ exports.getAlias = async function (cpf) {
       const data = JSON.stringify({
           "document": cpf,
           "password": access
-          //"is_android": true
       });
       const resp = await axios.post(url, data, {
           headers: headers

@@ -29,12 +29,10 @@ server.on('request', async (request, response) => {
           body += data;
         });
         request.on('end', async () => {
-          console.log(body);
           let cpf = JSON.parse(body)['cpf'];
-          console.log('cpf = ' + cpf);
           let alias = '';
           if (cpf !== '') {
-            alias = await liveonAccount.getAlias("14090172730");
+            alias = await liveonAccount.getAlias(cpf);
           }
           response.end(JSON.stringify(alias));
         });
