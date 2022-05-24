@@ -274,3 +274,8 @@ exports.sendDocInfo = async function (client, cpf, docs) {
         return _error;
     }
 }
+
+// 07747615693
+// 2022-02-04
+// Janete Santos Pereira Maini
+// 1990-08-06

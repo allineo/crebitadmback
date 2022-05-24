@@ -48,10 +48,8 @@ server.on('request', async (request, response) => {
 
       case "/docsinfo":
         request.on('end', async () => {
-          if (docs !== '') {
-            respjson = await liveonIndividuo.sendDocInfo(
-              JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
-          }
+          respjson = await liveonIndividuo.sendDocInfo(
+            JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
           response.end(JSON.stringify(respjson));
         });
         break;
