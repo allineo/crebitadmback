@@ -236,41 +236,38 @@ exports.sendDocInfo = async function (client, cpf, docs) {
         const id = user['liveon']['individual_id'];
         const nome = user['nome'];
 
-    const urlDocInfo = liveonCredentials['url'] + '/v2/register/individual/step5';
-    var header = {
-        'Content-Type': 'application/json',
-        'Subscription-key': liveonCredentials['subscriptionKey']
-        //  'Authorization': 'Basic ' + getEnv('liveon')['Authorization'] 
-    };
-    var data = JSON.stringify({
-        "individual_id": id,
-        "document_number": docs.rg,
-        "document_state": docs.uf,
-        "issuance_date": docs.emissao,
-        "document_name": nome,
-        "mother_name": docs.mae,
-        "gender": docs.gender,
-        "birth_date": docs.nascimento,
-        "marital_status": "Solteiro (a)",
-        "nationality": "Brasileiro",
-        "pep": true,
-        "pep_since": "2000-05-05"
-    });
-    var requestOptions = {
-        method: 'POST',
-        headers: header,
-        body: data,
-        redirect: 'follow'
-    };
-    fetch(urlDocInfo, requestOptions)
-        .then(response => response.json())
-        .then(result => {
-            console.log(result);
+        const url = liveonCredentials['url'] + '/v2/register/individual/step5';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey']
+        }
+        var data = JSON.stringify({
+            "individual_id": id,
+            "document_number": docs.rg,
+            "document_state": docs.uf,
+            "issuance_date": docs.emissao,
+            "document_name": nome,
+            "mother_name": docs.mae,
+            "gender": docs.gender,
+            "birth_date": docs.nascimento,
+            "marital_status": "Solteiro (a)",
+            "nationality": "Brasileiro",
+            "pep": true,
+            "pep_since": "2000-05-05"
+        });
+        const resp = await axios.post(url, data, {
+            headers: headers
         })
-        .catch(error => console.log('error', error));
-
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
     } catch (_error) {
-        console.log(_error);
+        console.log("rendaIndividual " + _error);
         return _error;
     }
 }
