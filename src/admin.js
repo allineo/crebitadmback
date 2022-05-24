@@ -29,30 +29,29 @@ server.on('request', async (request, response) => {
     });
     let respjson = '';
 
-    let client = JSON.parse(body)['client'];
-    let cpf = JSON.parse(body)['cpf'];
     if (client !== '' && cpf != '') {
       switch (request.url) {
 
         case "/getindividuo":
           request.on('end', async () => {
-            respjson = await liveonIndividuo.getIndividuo(cpf);
+            respjson = await liveonIndividuo.getIndividuo(JSON.parse(body)['cpf']);
             response.end(JSON.stringify(respjson));
           });
           break;
 
         case "/createindividuo":
           request.on('end', async () => {
-            respjson = await liveonIndividuo.createFullIndividuo(client, cpf);
+            respjson = await liveonIndividuo.createFullIndividuo(
+              JSON.parse(body)['client'], JSON.parse(body)['cpf']);
             response.end(JSON.stringify(respjson));
           });
           break;
 
         case "/docsinfo":
           request.on('end', async () => {
-            let docs = JSON.parse(body)['docs'];
             if (docs !== '') {
-              respjson = await liveonIndividuo.sendDocInfo(client, cpf, docs);
+              respjson = await liveonIndividuo.sendDocInfo(
+                JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
             }
             response.end(JSON.stringify(respjson));
           });
@@ -60,7 +59,7 @@ server.on('request', async (request, response) => {
 
         case "/alias":
           request.on('end', async () => {
-            respjson = await liveonAccount.getAlias(cpf);
+            respjson = await liveonAccount.getAlias(JSON.parse(body)['cpf']);
             response.end(JSON.stringify(respjson));
           });
           break;
