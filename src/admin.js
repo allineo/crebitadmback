@@ -29,44 +29,42 @@ server.on('request', async (request, response) => {
     });
     let respjson = '';
 
-    if (client !== '' && cpf != '') {
-      switch (request.url) {
+    switch (request.url) {
 
-        case "/getindividuo":
-          request.on('end', async () => {
-            respjson = await liveonIndividuo.getIndividuo(JSON.parse(body)['cpf']);
-            response.end(JSON.stringify(respjson));
-          });
-          break;
+      case "/getindividuo":
+        request.on('end', async () => {
+          respjson = await liveonIndividuo.getIndividuo(JSON.parse(body)['cpf']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
 
-        case "/createindividuo":
-          request.on('end', async () => {
-            respjson = await liveonIndividuo.createFullIndividuo(
-              JSON.parse(body)['client'], JSON.parse(body)['cpf']);
-            response.end(JSON.stringify(respjson));
-          });
-          break;
+      case "/createindividuo":
+        request.on('end', async () => {
+          respjson = await liveonIndividuo.createFullIndividuo(
+            JSON.parse(body)['client'], JSON.parse(body)['cpf']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
 
-        case "/docsinfo":
-          request.on('end', async () => {
-            if (docs !== '') {
-              respjson = await liveonIndividuo.sendDocInfo(
-                JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
-            }
-            response.end(JSON.stringify(respjson));
-          });
-          break;
+      case "/docsinfo":
+        request.on('end', async () => {
+          if (docs !== '') {
+            respjson = await liveonIndividuo.sendDocInfo(
+              JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
+          }
+          response.end(JSON.stringify(respjson));
+        });
+        break;
 
-        case "/alias":
-          request.on('end', async () => {
-            respjson = await liveonAccount.getAlias(JSON.parse(body)['cpf']);
-            response.end(JSON.stringify(respjson));
-          });
-          break;
+      case "/alias":
+        request.on('end', async () => {
+          respjson = await liveonAccount.getAlias(JSON.parse(body)['cpf']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
 
-        default:
-          response.end("Hello Crebit Admin POST");
-      }
+      default:
+        response.end("Hello Crebit Admin POST");
     }
   }
   /*catch(err => {
