@@ -19,16 +19,17 @@ server.on('request', async (request, response) => {
     let respjson = '';
 
     let body = JSON.stringify({
-      "docs": {
+     /* "docs": {
         "rg": "1299798",
         "uf": "RJ",
         "emissao": "2010-10-10",
         "mae": "Cleusa Maria de Oliveira",
         "nascimento": "1974-12-23",
         "gender": "F"
-      },
+      },*/
       "cpf": "65904249187",
-      "client": "Crebit"
+      "client": "Crebit",
+      "card" : "4261760537464823",
     });
 
     switch (request.url) {

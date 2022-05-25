@@ -44,19 +44,15 @@ exports.getAlias = async function (cpf) {
   }
 }
 
-async function getToken(cpf) {
-    let token = await getAlias(cpf);
-    return token;
-}
 
 exports.activateCard = async function (client, cpf, card) {
     try {
-        const token = await getToken(cpf);
+        const alias = await this.getAlias(cpf);
         const url = liveonCredentials['url'] + '/card/physical/active';
         const headers = {
             'Content-Type': 'application/json',
             'Subscription-key': liveonCredentials['subscriptionKey'],
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + alias['token']
         }
         const accesscard = cpf.substring(3, 7).split("").reverse().join("");
         const data = JSON.stringify({
@@ -64,7 +60,6 @@ exports.activateCard = async function (client, cpf, card) {
             "password": accesscard,
             "confirm_password": accesscard
         });
-        console.log('card = ' + accesscard);
         const resp = await axios.post(url, data, {
             headers: headers
         })
@@ -84,5 +79,4 @@ exports.activateCard = async function (client, cpf, card) {
         console.log("activateCard " + _error);
     }
 }
-
 //{ success: true, message: 'Cartão desbloqueado com sucesso' }
