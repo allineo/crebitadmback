@@ -90,7 +90,7 @@ async function createCPFIndividuo(cpf) {
             return resp["individual_id"];
         } catch (_error) {
             console.log("createIndividual " + _error);
-            return _error;
+            return JSON.parse(_error);
         }
     }
 }
@@ -267,12 +267,7 @@ exports.sendDocInfo = async function (client, cpf, docs) {
                 //console.log(error);
             });
     } catch (_error) {
-        console.log("rendaIndividual " + _error);
-        return _error;
+        console.log("DOcs info " + _error);
+        return JSON.parse(_error);
     }
 }
-
-// 07747615693
-// 2022-02-04
-// Janete Santos Pereira Maini
-// 1990-08-06

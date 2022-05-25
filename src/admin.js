@@ -1,7 +1,7 @@
 var http = require("http");
 const liveonIndividuo = require('./liveonindividuo');
 const liveonAccount = require('./liveonaccount');
-
+const liveonAdministator = require('./liveonadministator');
 
 const server = http.createServer();
 server.on('request', async (request, response) => {
@@ -50,6 +50,14 @@ server.on('request', async (request, response) => {
         request.on('end', async () => {
           respjson = await liveonIndividuo.sendDocInfo(
             JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
+
+      case "/approveindividuo":
+        request.on('end', async () => {
+          respjson = await liveonAdministator.approveIndividuo(
+            JSON.parse(body)['client'], JSON.parse(body)['cpf']);
           response.end(JSON.stringify(respjson));
         });
         break;
