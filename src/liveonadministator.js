@@ -71,7 +71,7 @@ exports.approveIndividuo = async function (client, cpf) {
             .then(function (response) {
                 //console.log(response);
                 console.log(response.data);
-                await acessoindividuo(cpf, id);
+                acessoindividuo(cpf, id);
                 return response.data;
             })
             .catch(function (error) {
