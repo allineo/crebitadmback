@@ -69,6 +69,14 @@ server.on('request', async (request, response) => {
         });
         break;
 
+      case "/activatecard":
+        request.on('end', async () => {
+          respjson = await liveonAccount.activateCard(
+            JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['card']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
+
       default:
         response.end("Hello Crebit Admin POST");
     }

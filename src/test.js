@@ -19,8 +19,16 @@ server.on('request', async (request, response) => {
     let respjson = '';
 
     let body = JSON.stringify({
+      "docs": {
+        "rg": "1299798",
+        "uf": "RJ",
+        "emissao": "2010-10-10",
+        "mae": "Cleusa Maria de Oliveira",
+        "nascimento": "1974-12-23",
+        "gender": "F"
+      },
       "cpf": "65904249187",
-      "client": "RR4X"
+      "client": "Crebit"
     });
 
     switch (request.url) {
@@ -39,16 +47,11 @@ server.on('request', async (request, response) => {
         break;
 
       case "/docsinfo":
-        let docs = {
-          "rg": "1299798",
-          "uf": "RJ",
-          "emissao": "2010-10-10",
-          "mae": "Cleusa Maria de Oliveira",
-          "nascimento": "1974-12-23",
-          "gender": "F"
-        };
-        respjson = await liveonIndividuo.sendDocInfo(client, cpf, docs);
+        //request.on('end', async () => {
+        respjson = await liveonIndividuo.sendDocInfo(
+          JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
         response.end(JSON.stringify(respjson));
+        //});
         break;
 
       case "/approveindividuo":
@@ -60,13 +63,18 @@ server.on('request', async (request, response) => {
         break;
 
       case "/alias":
-        request.on('end', async () => {
-          let cpf = JSON.parse(body)['cpf'];
-          if (cpf !== '') {
-            respjson = await liveonAccount.getAlias(cpf);
-          }
+        //request.on('end', async () => {
+        respjson = await liveonAccount.getAlias(JSON.parse(body)['cpf']);
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/activatecard":
+        //request.on('end', async () => {
+          respjson = await liveonAccount.activateCard(
+            JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['card']);
           response.end(JSON.stringify(respjson));
-        });
+        //});
         break;
 
       default:

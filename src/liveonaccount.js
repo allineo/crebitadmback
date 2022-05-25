@@ -8,8 +8,6 @@ var axios = require('axios');
 let liveonCredentials = {
     "url": "https://lotus-prod-apim.baas.solutions/crebit",
     "subscriptionKey": "16d9f23318a14fe38555008356a59854",
-    "Authorization": "MFY2MzlPNVF5b0lpNDNINGh0RFhIQWVUNDMrUzh2OGxNdDY1bGJ4RjVzUT06U1Z0YmZ6QmxZV1Y3dkU0WTRDRU5jaE16OXFYOE11M3Z6enpNWmxUNzNZclI0b0NrM0VsdzltM0h2Nm12RmxYVllHRFVEWW5FeXY2UVBNTUJZSWY0V2c9PQ==",
-    "adminpwd": "70c071daac26ae7b"
 };
 
 
@@ -36,6 +34,7 @@ exports.getAlias = async function (cpf) {
               console.log('error.response.data: ' + JSON.stringify(error.response.data));
               console.log('error.config: ' + JSON.stringify(error.config));
               //console.log(error);
+              return JSON.stringify(error.response.data)
           });
 
         return resp;
@@ -44,3 +43,46 @@ exports.getAlias = async function (cpf) {
       console.log("getToken " + _error);
   }
 }
+
+async function getToken(cpf) {
+    let token = await getAlias(cpf);
+    return token;
+}
+
+exports.activateCard = async function (client, cpf, card) {
+    try {
+        const token = await getToken(cpf);
+        const url = liveonCredentials['url'] + '/card/physical/active';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + token
+        }
+        const accesscard = cpf.substring(3, 7).split("").reverse().join("");
+        const data = JSON.stringify({
+            "card_number": card,
+            "password": accesscard,
+            "confirm_password": accesscard
+        });
+        console.log('card = ' + accesscard);
+        const resp = await axios.post(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+                return JSON.stringify(error.response.data);
+            });
+
+        return resp;
+    } catch (_error) {
+        console.log("activateCard " + _error);
+    }
+}
+
+//{ success: true, message: 'Cartão desbloqueado com sucesso' }

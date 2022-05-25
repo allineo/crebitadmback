@@ -70,7 +70,6 @@ exports.approveIndividuo = async function (client, cpf) {
         })
             .then(function (response) {
                 //console.log(response);
-                console.log(response.data);
                 acessoindividuo(cpf, id);
                 return response.data;
             })
