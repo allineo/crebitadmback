@@ -1,7 +1,8 @@
 var axios = require('axios');
 
 
-// 3.83.58.159  
+// 3.83.58.159    // /usr/share/nginx/html 
+// https://maas-baas.readme.io
 // Collection Postman: https://www.getpostman.com/collections/fe186c20177c57fb8041
 // https://www.getpostman.com/collections/8642d8b8301dd4bbdd2d
 
@@ -36,7 +37,6 @@ exports.getAlias = async function (cpf) {
               //console.log(error);
               return JSON.stringify(error.response.data)
           });
-
         return resp;
       //return resp['token'];
   } catch (_error) {
@@ -80,3 +80,35 @@ exports.activateCard = async function (client, cpf, card) {
     }
 }
 //{ success: true, message: 'Cartão desbloqueado com sucesso' }
+
+
+
+
+exports.listCards = async function (cpf) {
+    try {
+        const alias = await this.getAlias(cpf);
+        const url = liveonCredentials['url'] + '/cards';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + alias['token']
+        }
+        const resp = await axios.get(url, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+                return JSON.stringify(error.response.data);
+            });
+
+        return resp;
+    } catch (_error) {
+        console.log("listCards " + _error);
+    }
+}

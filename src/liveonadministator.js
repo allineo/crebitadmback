@@ -1,9 +1,7 @@
 var axios = require('axios');
-const firebasedb = require('./firebase');
 
-
-// 3.83.58.159  
-// Collection Postman: https://www.getpostman.com/collections/fe186c20177c57fb8041
+// 3.83.58.159    // /usr/share/nginx/html 
+// https://maas-baas.readme.io 
 // https://www.getpostman.com/collections/8642d8b8301dd4bbdd2d
 
 let liveonCredentials = {
@@ -44,11 +42,11 @@ async function getAdminToken() {
 }
 
 
-exports.approveIndividuo = async function (client, cpf) {
-    let user = null;
+exports.approveIndividuo = async function (cpf, id) {
+    //let user = null;
     try {
-        user = await firebasedb.queryByCPF(client, cpf);
-        const id = user['liveon']['individual_id'];
+       // user = await firebasedb.queryByCPF(client, cpf);
+       // const id = user['liveon']['individual_id'];
 
         const admintoken = await getAdminToken();
         //console.log(admintoken);
@@ -114,3 +112,77 @@ async function acessoindividuo(cpf, id) {
         return _error;
     }
 }
+
+exports.unblockIndividuo = async function () {
+    try {
+        let accountid = '61463bc7214f6200506391a2';
+        const admintoken = await getAdminToken();
+        const url = liveonCredentials['url'] + '/portal/account/' + accountid + '/block';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + admintoken
+        }
+        const data = JSON.stringify({
+            "blocked": false,
+            "password": "a2ea3898678a4bf5",
+        });
+
+        const resp = await axios.put(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                //console.log(response);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp; 
+    } catch (_error) {
+        console.log("unblockIndividuo " + _error);
+    }
+}
+
+
+exports.showAccount = async function () {
+    try {
+        let accountid = '6291477323583800627ee7b9';
+        const admintoken = await getAdminToken();
+        const url = liveonCredentials['url'] + '/portal/account/' + accountid;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + admintoken
+        }
+        const resp = await axios.get(url, {
+            headers: headers
+        })
+            .then(function (response) {
+                //console.log(response);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp; 
+    } catch (_error) {
+        console.log("showaccount " + _error);
+    }
+}
+
+/*{"success":true,"id":"61463bc7214f6200506391a2","account_number":"46663",
+"email":"alline.oliveira@gmail.com","individual_id":"614220bf011fb90050503717","company_id":"",
+"full_name":"Alline de Oliveira e Silva","document":"65904249187","account_type":"pf",
+"status":"approved","status_description":"","canceled_date":"","blocked":false,
+"username":"65904249187","balance":"19.8","balance_cents":1980,
+"last_access":"2022-05-27T21:54:42.315Z",
+"avatar_url":"https://crebit-prod-lotus-api.baas.solutions/files/defaultAvatar.png",
+"alias_account":{"account_digit":"","account_number":"6226758175","account_status":"ACTIVE",
+"account_type":"CC","bank_number":"655","branch_digit":"","branch_number":"1111",
+"created_date":"2021-09-23T12:00:07.279Z"},"external_blocked":false,
+"created_at":"2021-09-18T19:19:35.020Z","updated_at":"2022-05-27T21:54:42.315Z"} */

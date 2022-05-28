@@ -230,23 +230,22 @@ async function rendaIndividual(userdata) {
 
 
 exports.sendDocInfo = async function (client, cpf, docs) {
-    let user = null;
+    //let user = null;
     try {
-        user = await firebasedb.queryByCPF(client, cpf);
-        const id = user['liveon']['individual_id'];
-        const nome = user['nome'];
-
+     //   user = await firebasedb.queryByCPF(client, cpf);
+     //   const id = user['liveon']['individual_id'];
+     //   const nome = user['nome'];
         const url = liveonCredentials['url'] + '/v2/register/individual/step5';
         const headers = {
             'Content-Type': 'application/json',
             'Subscription-key': liveonCredentials['subscriptionKey']
         }
         var data = JSON.stringify({
-            "individual_id": id,
+            "individual_id": docs.id,
             "document_number": docs.rg,
             "document_state": docs.uf,
             "issuance_date": docs.emissao,
-            "document_name": nome,
+            "document_name": docs.nome,
             "mother_name": docs.mae,
             "gender": docs.gender,
             "birth_date": docs.nascimento,
