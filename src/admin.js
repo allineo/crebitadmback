@@ -1,6 +1,7 @@
 var http = require("http");
 const liveonIndividuo = require('./liveonindividuo');
 const liveonAccount = require('./liveonaccount');
+const liveoncard = require('./liveoncard');
 const liveonAdministator = require('./liveonadministator');
 
 const server = http.createServer();
@@ -70,7 +71,7 @@ server.on('request', async (request, response) => {
 
       case "/activatecard":
         request.on('end', async () => {
-          respjson = await liveonAccount.activateCard(
+          respjson = await liveoncard.activateCard(
             JSON.parse(body)['cpf'], JSON.parse(body)['card']);
           response.end(JSON.stringify(respjson));
         });
@@ -78,7 +79,7 @@ server.on('request', async (request, response) => {
 
         case "/listcards":
           request.on('end', async () => {
-            respjson = await liveonAccount.listCards(JSON.parse(body)['cpf']);
+            respjson = await liveoncard.listCards(JSON.parse(body)['cpf']);
             response.end(JSON.stringify(respjson));
           });
           break;

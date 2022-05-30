@@ -97,7 +97,7 @@ exports.listCards = async function (cpf) {
             headers: headers
         })
             .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 return response.data;
             })
             .catch(function (error) {

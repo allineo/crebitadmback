@@ -79,7 +79,7 @@ exports.approveIndividuo = async function (cpf, id) {
 }
 
 
-async function acessoindividuo(cpf, id) {
+exports.acessoindividuo = async function (cpf, id) {
     try {
         const url = liveonCredentials['url'] + '/v2/register/individual/step9';
         const headers = {
@@ -187,9 +187,9 @@ exports.showAccount = async function () {
 
 exports.unblockCard = async function () {
     try {
-        const cardid = '40737';
+        const cardid = '40738';
         const admintoken = await getAdminToken();
-        const url = liveonCredentials['url'] + '/portal/card/' + cardid + '/unblock';
+        const url = liveonCredentials['url'] + '/portal/card/' + cardid + '/block';
         const headers = {
             'Content-Type': 'application/json',
             'Subscription-key': liveonCredentials['subscriptionKey'],
@@ -213,6 +213,6 @@ exports.unblockCard = async function () {
             });
         return resp; 
     } catch (_error) {
-        console.log("unblockIndividuo " + _error);
+        console.log("unblockCard " + _error);
     }
 }

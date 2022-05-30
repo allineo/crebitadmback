@@ -29,8 +29,9 @@ server.on('request', async (request, response) => {
          "gender": "F"
        },*/
       "cpf": "65904249187",
-      "client": "Crebit",
-      "card": "4261760537464823",
+      //"id": "628e6bc623583800627edfd6",
+     // "client": "Crebit",
+     // "card": "4261760537464823",
     });
 
     switch (request.url) {
@@ -58,8 +59,14 @@ server.on('request', async (request, response) => {
 
       case "/approveindividuo":
         //request.on('end', async () => {
-        respjson = await liveonAdministator.approveIndividuo(
-          JSON.parse(body)['client'], JSON.parse(body)['cpf']);
+        respjson = await liveonAdministator.approveIndividuo(JSON.parse(body)['cpf'], JSON.parse(body)['id']);
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+        case "/acessoindividuo":
+        //request.on('end', async () => {
+        respjson = await liveonAdministator.acessoindividuo(JSON.parse(body)['cpf'], JSON.parse(body)['id']);
         response.end(JSON.stringify(respjson));
         //});
         break;
