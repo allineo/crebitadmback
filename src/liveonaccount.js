@@ -45,7 +45,7 @@ exports.getAlias = async function (cpf) {
 }
 
 
-exports.activateCard = async function (client, cpf, card) {
+exports.activateCard = async function (cpf, card) {
     try {
         const alias = await this.getAlias(cpf);
         const url = liveonCredentials['url'] + '/card/physical/active';

@@ -72,10 +72,17 @@ server.on('request', async (request, response) => {
       case "/activatecard":
         request.on('end', async () => {
           respjson = await liveonAccount.activateCard(
-            JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['card']);
+            JSON.parse(body)['cpf'], JSON.parse(body)['card']);
           response.end(JSON.stringify(respjson));
         });
         break;
+
+        case "/listcards":
+          request.on('end', async () => {
+            respjson = await liveonAccount.listCards(JSON.parse(body)['cpf']);
+            response.end(JSON.stringify(respjson));
+          });
+          break;
 
       default:
         response.end("Hello Crebit Admin POST");
