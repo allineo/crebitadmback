@@ -48,8 +48,7 @@ server.on('request', async (request, response) => {
 
       case "/docsinfo":
         request.on('end', async () => {
-          respjson = await liveonIndividuo.sendDocInfo(
-            JSON.parse(body)['client'], JSON.parse(body)['cpf'], JSON.parse(body)['docs']);
+          respjson = await liveonIndividuo.sendDocInfo(JSON.parse(body)['docs']);
           response.end(JSON.stringify(respjson));
         });
         break;
@@ -57,7 +56,7 @@ server.on('request', async (request, response) => {
       case "/approveindividuo":
         request.on('end', async () => {
           respjson = await liveonAdministator.approveIndividuo(
-            JSON.parse(body)['client'], JSON.parse(body)['cpf']);
+            JSON.parse(body)['cpf'], JSON.parse(body)['id']);
           response.end(JSON.stringify(respjson));
         });
         break;

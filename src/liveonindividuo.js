@@ -2,8 +2,8 @@ var axios = require('axios');
 const firebasedb = require('./firebase');
 
 
-// 3.83.58.159  
-// Collection Postman: https://www.getpostman.com/collections/fe186c20177c57fb8041
+// 3.83.58.159    // /usr/share/nginx/html 
+// https://maas-baas.readme.io 
 // https://www.getpostman.com/collections/8642d8b8301dd4bbdd2d
 
 let liveonCredentials = {
@@ -229,12 +229,8 @@ async function rendaIndividual(userdata) {
 }
 
 
-exports.sendDocInfo = async function (client, cpf, docs) {
-    //let user = null;
+exports.sendDocInfo = async function (docs) {
     try {
-     //   user = await firebasedb.queryByCPF(client, cpf);
-     //   const id = user['liveon']['individual_id'];
-     //   const nome = user['nome'];
         const url = liveonCredentials['url'] + '/v2/register/individual/step5';
         const headers = {
             'Content-Type': 'application/json',

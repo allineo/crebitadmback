@@ -43,11 +43,7 @@ async function getAdminToken() {
 
 
 exports.approveIndividuo = async function (cpf, id) {
-    //let user = null;
     try {
-       // user = await firebasedb.queryByCPF(client, cpf);
-       // const id = user['liveon']['individual_id'];
-
         const admintoken = await getAdminToken();
         //console.log(admintoken);
         const url = liveonCredentials['url'] + '/portal/individual/account';
@@ -186,3 +182,37 @@ exports.showAccount = async function () {
 "account_type":"CC","bank_number":"655","branch_digit":"","branch_number":"1111",
 "created_date":"2021-09-23T12:00:07.279Z"},"external_blocked":false,
 "created_at":"2021-09-18T19:19:35.020Z","updated_at":"2022-05-27T21:54:42.315Z"} */
+
+
+
+exports.unblockCard = async function () {
+    try {
+        const cardid = '40737';
+        const admintoken = await getAdminToken();
+        const url = liveonCredentials['url'] + '/portal/card/' + cardid + '/unblock';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + admintoken
+        }
+        const data = JSON.stringify({
+            "password": "a2ea3898678a4bf5",
+        });
+
+        const resp = await axios.post(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                //console.log(response);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp; 
+    } catch (_error) {
+        console.log("unblockIndividuo " + _error);
+    }
+}
