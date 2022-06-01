@@ -2,6 +2,7 @@ var http = require("http");
 const liveonIndividuo = require('./liveonindividuo');
 const liveonAccount = require('./liveonaccount');
 const liveoncard = require('./liveoncard');
+const liveoncnpj = require('./liveoncnpj');
 const liveonAdministator = require('./liveonadministator');
 
 const server = http.createServer();
@@ -77,13 +78,20 @@ server.on('request', async (request, response) => {
         });
         break;
 
-        case "/listcards":
-          request.on('end', async () => {
-            respjson = await liveoncard.listCards(JSON.parse(body)['cpf']);
-            response.end(JSON.stringify(respjson));
-          });
-          break;
+      case "/listcards":
+        request.on('end', async () => {
+          respjson = await liveoncard.listCards(JSON.parse(body)['cpf']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
 
+      case "/createcnpj":
+        request.on('end', async () => {
+          respjson = await liveoncnpj.createCNPJ(body);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
+        
       default:
         response.end("Hello Crebit Admin POST");
     }
