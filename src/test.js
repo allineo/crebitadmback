@@ -3,6 +3,7 @@ const liveonIndividuo = require('./liveonindividuo');
 const liveonAdministator = require('./liveonadministator');
 const liveonAccount = require('./liveonaccount');
 const liveoncard = require('./liveoncard');
+const liveoncnpj = require('./liveoncnpj');
 
 
 const server = http.createServer();
@@ -29,9 +30,13 @@ server.on('request', async (request, response) => {
          "gender": "F"
        },*/
       "cpf": "65904249187",
-      //"id": "628e6bc623583800627edfd6",
+      //"id": "6298b86d23583800627ef255",
+      //"operatorid": "62a1267a62edaa0057294626",
+      //"code": "193476",
      // "client": "Crebit",
      // "card": "4261760537464823",
+     //"nome" : 'Alline de Oliveira e Silva',
+     //"email" : 'alline.oliveira@gmail.com',
     });
 
     switch (request.url) {
@@ -78,6 +83,20 @@ server.on('request', async (request, response) => {
         //});
         break;
 
+      case "/balance":
+        //request.on('end', async () => {
+        respjson = await liveonAccount.getSaldo(JSON.parse(body)['cpf']);
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/statements":
+        //request.on('end', async () => {
+        respjson = await liveonAccount.getExtrato(JSON.parse(body)['cpf']);
+        response.end(respjson);
+        //});
+        break;    
+
       case "/activatecard":
         //request.on('end', async () => {
         respjson = await liveoncard.activateCard(
@@ -110,6 +129,48 @@ server.on('request', async (request, response) => {
       case "/showaccount":
         //request.on('end', async () => {
         respjson = await liveonAdministator.showAccount();
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/addcompanyoperator":
+        //request.on('end', async () => {
+        respjson = await liveoncnpj.createCNPJoperator(JSON.parse(body));
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/sendcodeperator":
+        //request.on('end', async () => {
+        respjson = await liveoncnpj.sendCodeOperator(JSON.parse(body));
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/validatecompanyoperator":
+        //request.on('end', async () => {
+        respjson = await liveoncnpj.validateCNPJoperator(JSON.parse(body));
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/listcompanies":
+        //request.on('end', async () => {
+        respjson = await liveonAdministator.listCNPJ();
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/getcompany":
+        //request.on('end', async () => {
+        respjson = await liveonAdministator.getCNPJ(JSON.parse(body)['id']);
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/approvecompany":
+        //request.on('end', async () => {
+        respjson = await liveonAdministator.approveCNPJ(JSON.parse(body)['id']);
         response.end(JSON.stringify(respjson));
         //});
         break;

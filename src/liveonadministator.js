@@ -72,7 +72,7 @@ exports.approveIndividuo = async function (cpf, id) {
                 console.log('error.config: ' + JSON.stringify(error.config));
                 //console.log(error);
             });
-        return resp; 
+        return resp;
     } catch (_error) {
         console.log("approveIndividuo " + _error);
     }
@@ -136,7 +136,7 @@ exports.unblockIndividuo = async function () {
                 console.log('error.config: ' + JSON.stringify(error.config));
                 //console.log(error);
             });
-        return resp; 
+        return resp;
     } catch (_error) {
         console.log("unblockIndividuo " + _error);
     }
@@ -165,7 +165,7 @@ exports.showAccount = async function () {
                 console.log('error.config: ' + JSON.stringify(error.config));
                 //console.log(error);
             });
-        return resp; 
+        return resp;
     } catch (_error) {
         console.log("showaccount " + _error);
     }
@@ -211,8 +211,101 @@ exports.unblockCard = async function () {
                 console.log('error.config: ' + JSON.stringify(error.config));
                 //console.log(error);
             });
-        return resp; 
+        return resp;
     } catch (_error) {
         console.log("unblockCard " + _error);
+    }
+}
+
+
+exports.listCNPJ = async function () {
+    try {
+        const admintoken = await getAdminToken();
+        const url = liveonCredentials['url'] + '/portal/companies';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + admintoken
+        }
+        const resp = await axios.get(url, {
+            headers: headers
+        })
+            .then(function (response) {
+                //console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp;
+    } catch (_error) {
+        console.log("listCNPJ " + _error);
+        return JSON.parse(_error);
+    }
+}
+
+exports.getCNPJ = async function (id) {
+    try {
+        const admintoken = await getAdminToken();
+        const url = liveonCredentials['url'] + '/portal/company/' + id;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + admintoken
+        }
+        const resp = await axios.get(url, {
+            headers: headers
+        })
+            .then(function (response) {
+                //console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp;
+    } catch (_error) {
+        console.log("getCNPJ " + _error);
+        return JSON.parse(_error);
+    }
+}
+
+
+exports.approveCNPJ = async function (id) {
+    try {
+        const admintoken = await getAdminToken();
+        //console.log(admintoken);
+        const url = liveonCredentials['url'] + '/company/account';
+        
+        const headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + admintoken
+        }
+        const data = JSON.stringify({
+            "company_id": id,
+            "password": "a2ea3898678a4bf5",
+            "status": "approved"
+        });
+        const resp = await axios.post(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log(response);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp;
+    } catch (_error) {
+        console.log("approveCNPJ " + _error);
     }
 }

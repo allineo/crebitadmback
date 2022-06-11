@@ -9,12 +9,10 @@ const firebasedb = require('./firebase');
 let liveonCredentials = {
     "url": "https://lotus-prod-apim.baas.solutions/crebit",
     "subscriptionKey": "16d9f23318a14fe38555008356a59854",
-    "Authorization": "MFY2MzlPNVF5b0lpNDNINGh0RFhIQWVUNDMrUzh2OGxNdDY1bGJ4RjVzUT06U1Z0YmZ6QmxZV1Y3dkU0WTRDRU5jaE16OXFYOE11M3Z6enpNWmxUNzNZclI0b0NrM0VsdzltM0h2Nm12RmxYVllHRFVEWW5FeXY2UVBNTUJZSWY0V2c9PQ==",
 };
 
 
 exports.createCNPJ = async function (data) {
-    console.log(data);
     try {
         const url = liveonCredentials['url'] + '/company/register';
         const headers = {
@@ -61,3 +59,95 @@ exports.createCNPJ = async function (data) {
     "phone": 123456789,
     "promotional_code": "ABCDE12345"
   }*/
+
+  
+
+exports.createCNPJoperator = async function (dados) {
+    try {
+        const url = liveonCredentials['url'] + '/company/' + dados['id'] + '/operator';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey']
+        }
+        const data = JSON.stringify({
+            "document": dados['cpf'],
+            "name": dados['nome'],
+            "email": dados['email'],
+        });
+        const resp = await axios.post(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp;
+    } catch (_error) {
+        console.log("createCNPJoperator " + _error);
+        return JSON.parse(_error);
+    }
+}
+// operator id = '62a1267a62edaa0057294626',
+
+
+
+exports.sendCodeOperator = async function (dados) {
+    try {
+        const url = liveonCredentials['url'] + '/company/' + dados['id'] + '/operator/' + dados['operatorid'] + '/send_code';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey']
+        }
+        const resp = await axios.post(url, {}, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp;
+    } catch (_error) {
+        console.log("validateCNPJoperator " + _error);
+        return JSON.parse(_error);
+    }
+}
+
+
+exports.validateCNPJoperator = async function (dados) {
+    try {
+        const url = liveonCredentials['url'] + '/company/' + dados['id'] + '/operator/' + dados['operatorid'] + '/validate_code';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey']
+        }
+        const data = JSON.stringify({
+            "code": dados['code']
+        });
+        const resp = await axios.post(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log(response.data);
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+        return resp;
+    } catch (_error) {
+        console.log("validateCNPJoperator " + _error);
+        return JSON.parse(_error);
+    }
+}

@@ -70,6 +70,20 @@ server.on('request', async (request, response) => {
         });
         break;
 
+      case "/balance":
+        request.on('end', async () => {
+          respjson = await liveonAccount.getSaldo(JSON.parse(body)['cpf']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
+    
+      case "/statements":
+        request.on('end', async () => {
+          respjson = await liveonAccount.getExtrato(JSON.parse(body)['cpf']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
+
       case "/activatecard":
         request.on('end', async () => {
           respjson = await liveoncard.activateCard(
