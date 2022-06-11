@@ -47,7 +47,9 @@ exports.getAlias = async function (cpf) {
 
 
 exports.getSaldo = async function (cpf) {
+    console.log(cpf)
     const token = await this.getAlias(cpf);
+    console.log(token)
     try {
         const url = liveonCredentials['url'] + '/account/balance';
         const headers = {
@@ -59,6 +61,7 @@ exports.getSaldo = async function (cpf) {
             headers: headers
         })
             .then(function (response) {
+                console.log(response);
                 return response.data;
             })
             .catch(function (error) {
