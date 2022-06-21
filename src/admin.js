@@ -105,6 +105,13 @@ server.on('request', async (request, response) => {
           response.end(JSON.stringify(respjson));
         });
         break;
+
+      case "/getcompany":
+        request.on('end', async () => {
+          respjson = await liveonAdministator.getCNPJ(JSON.parse(body)['id']);
+          response.end(JSON.stringify(respjson));
+        });
+        break;
         
       default:
         response.end("Hello Crebit Admin POST");

@@ -29,14 +29,14 @@ server.on('request', async (request, response) => {
          "nascimento": "1974-12-23",
          "gender": "F"
        },*/
-      "cpf": "65904249187",
-      //"id": "6298b86d23583800627ef255",
-      //"operatorid": "62a1267a62edaa0057294626",
+      "cpf": "05248397197",
+      "id": "62ade3d83a1e1c005703f6ba",
+      // "operatorid": "62a1267a62edaa0057294626",
       //"code": "193476",
-     // "client": "Crebit",
-     // "card": "4261760537464823",
-     //"nome" : 'Alline de Oliveira e Silva',
-     //"email" : 'alline.oliveira@gmail.com',
+      // "client": "Crebit",
+      // "card": "4261760537464823",
+      //"nome" : 'Alline de Oliveira e Silva',
+      //"email" : 'alline.oliveira@gmail.com',
     });
 
     switch (request.url) {
@@ -69,9 +69,23 @@ server.on('request', async (request, response) => {
         //});
         break;
 
-        case "/acessoindividuo":
+      case "/acessoindividuo":
         //request.on('end', async () => {
         respjson = await liveonAdministator.acessoindividuo(JSON.parse(body)['cpf'], JSON.parse(body)['id']);
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/changeaccess":
+        //request.on('end', async () => {
+        respjson = await liveonAccount.changeAccess(JSON.parse(body)['cpf']);
+        response.end(JSON.stringify(respjson));
+        //});
+        break;
+
+      case "/changeaccessOperador":
+        //request.on('end', async () => {
+        respjson = await liveonAccount.changeAccessOperador(JSON.parse(body)['operatorid'], JSON.parse(body)['cpf']);
         response.end(JSON.stringify(respjson));
         //});
         break;
@@ -95,7 +109,7 @@ server.on('request', async (request, response) => {
         respjson = await liveonAccount.getExtrato(JSON.parse(body)['cpf']);
         response.end(respjson);
         //});
-        break;    
+        break;
 
       case "/activatecard":
         //request.on('end', async () => {

@@ -44,19 +44,24 @@ exports.getIndividuo = async function (cpf) {
 
 exports.createFullIndividuo = async function (client, cpf) {
     let user = null;
+    user = await firebasedb.queryByCPF(client, cpf);
     try {
         let liveonid = await createCPFIndividuo(cpf);
         console.log(liveonid);
-
-        user = await firebasedb.queryByCPF(client, cpf);
         user['liveon']['individual_id'] = liveonid;
         firebasedb.update(user);
         console.log(user);
+    } catch (_error) {
+        console.log(_error);
+    }
 
-        await emailIndividual(user);
-        await phoneIndividual(user);
-        await addressIndividual(user);
-        await rendaIndividual(user);
+    try {
+        if (user['liveon']['individual_id'] != null) {
+            await emailIndividual(user);
+            await phoneIndividual(user);
+            await addressIndividual(user);
+            await rendaIndividual(user);
+        }
     } catch (_error) {
         console.log(_error);
         return _error;

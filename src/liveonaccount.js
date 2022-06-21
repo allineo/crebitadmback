@@ -19,7 +19,7 @@ exports.getAlias = async function (cpf) {
           'Content-Type': 'application/json',
           'Subscription-key': liveonCredentials['subscriptionKey']
       }
-      const access = cpf.substring(3, 9).split("").reverse().join("");
+      let access = cpf.substring(3, 9).split("").reverse().join("");
       const data = JSON.stringify({
           "document": cpf,
           "password": access
@@ -28,7 +28,7 @@ exports.getAlias = async function (cpf) {
           headers: headers
       })
           .then(function (response) {
-              //console.log('data = ' + JSON.stringify(response.data));
+              console.log('data = ' + JSON.stringify(response.data));
               return response.data;
           })
           .catch(function (error) {
@@ -47,9 +47,7 @@ exports.getAlias = async function (cpf) {
 
 
 exports.getSaldo = async function (cpf) {
-    console.log(cpf)
     const token = await this.getAlias(cpf);
-    console.log(token)
     try {
         const url = liveonCredentials['url'] + '/account/balance';
         const headers = {
@@ -61,7 +59,6 @@ exports.getSaldo = async function (cpf) {
             headers: headers
         })
             .then(function (response) {
-                console.log(response);
                 return response.data;
             })
             .catch(function (error) {
@@ -70,7 +67,7 @@ exports.getSaldo = async function (cpf) {
                 //console.log(error);
             });
 
-        return resp['balance_cents'];
+        return resp['balance'];
     } catch (_error) {
         console.log("getSaldo " + _error);
     }
@@ -137,3 +134,79 @@ function convertCents(centsvalue) {
         return cents.slice(0, -2) + ',' + (cents.slice(-2) + '');
     }
 }
+
+
+
+
+exports.changeAccess = async function (cpf) {
+    const token = await this.getAlias(cpf);
+    try {
+        const url = liveonCredentials['url'] + '/account/change_password';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + token['token']
+        }
+        const access = cpf.substring(3, 9).split("").reverse().join("");
+        console.log(access);
+        const data = JSON.stringify({
+                "old_password": "979330",
+                "new_password": access,
+                "confirm_password": access
+        });
+        const resp = await axios.put(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log('data = ' + JSON.stringify(response.data));
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+
+        return resp['balance'];
+    } catch (_error) {
+        console.log("getSaldo " + _error);
+    }
+}
+
+
+exports.changeAccessOperador = async function (operadorid, cnpj) {
+    const token = await this.getAlias(cnpj);
+    try {
+        const url = liveonCredentials['url'] + '/operator/' + operadorid + '/change_password';
+        const headers = {
+            'Content-Type': 'application/json',
+            'Subscription-key': liveonCredentials['subscriptionKey'],
+            'Authorization': 'Bearer ' + token['token']
+        }
+        const access = cnpj.substring(3, 9).split("").reverse().join("");
+        console.log(access);
+        const data = JSON.stringify({
+                "old_password": "979330",
+                "new_password": access,
+                "confirm_password": access
+        });
+        const resp = await axios.put(url, data, {
+            headers: headers
+        })
+            .then(function (response) {
+                console.log('data = ' + JSON.stringify(response.data));
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log('error.response.data: ' + JSON.stringify(error.response.data));
+                console.log('error.config: ' + JSON.stringify(error.config));
+                //console.log(error);
+            });
+
+        return resp['balance'];
+    } catch (_error) {
+        console.log("changeAccessOperador " + _error);
+    }
+}
+
+// 099840

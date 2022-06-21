@@ -259,7 +259,7 @@ exports.getCNPJ = async function (id) {
             headers: headers
         })
             .then(function (response) {
-                //console.log(response.data);
+                console.log(response.data);
                 return response.data;
             })
             .catch(function (error) {
@@ -273,6 +273,7 @@ exports.getCNPJ = async function (id) {
         return JSON.parse(_error);
     }
 }
+//accountid = '62a740943a1e1c005703f582',
 
 
 exports.approveCNPJ = async function (id) {
@@ -292,7 +293,7 @@ exports.approveCNPJ = async function (id) {
             "password": "a2ea3898678a4bf5",
             "status": "approved"
         });
-        const resp = await axios.post(url, data, {
+        const resp = await axios.put(url, data, {
             headers: headers
         })
             .then(function (response) {
